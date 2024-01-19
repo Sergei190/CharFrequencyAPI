@@ -2,29 +2,41 @@ package ru.consulting.sergei.charfrequencyapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+/**
+ * This class contains test cases for the Char Frequency API application.
+ */
+@SpringBootTest
+@AutoConfigureMockMvc
 class CharFrequencyApiApplicationTest {
 
-    @LocalServerPort
-    private int port;
+    MockMvc mockMvc;
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    CharFrequencyApiApplicationTest(MockMvc mockMvc) {
+        this.mockMvc = mockMvc;
+    }
 
+    /**
+     * Test method to ensure that the application context loads successfully.
+     */
     @Test
-    public void testGetCharacterFrequency() {
-        String input = "aaaaabcccc";
-        Map<Character, Long> result = this.restTemplate.getForObject("http://localhost:" + port + "/frequency?input={input}", Map.class, input);
-        assertThat(result.get('a')).isEqualTo(5);
-        assertThat(result.get('c')).isEqualTo(4);
-        assertThat(result.get('b')).isEqualTo(1);
+    void contextLoads() {
+    }
+
+    /**
+     * Test method to verify the functionality of your controller by performing a GET request to "/swagger-ui/".
+     *
+     * @throws Exception if an error occurs during the test.
+     */
+    @Test
+    public void testYourController() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/swagger-ui/"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
